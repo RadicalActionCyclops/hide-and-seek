@@ -11,6 +11,7 @@ import { useRouter } from "expo-router";
 import { useAuthStore } from "@/store/authStore";
 
 export default function SignUpPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -18,6 +19,8 @@ export default function SignUpPage() {
 
   async function handleSignUp() {
     try {
+      if (name.trim() === "")
+        throw new Error("Name cannot be empty.");
       await signUpWithEmail(email, password);
       if (!isLoading) {
         router.replace("/(tabs)");
@@ -34,6 +37,13 @@ export default function SignUpPage() {
 
         <View style={styles.form}>
           <View>
+            <TextInput
+              style={styles.input}
+              placeholder="Name"
+              placeholderTextColor="#A3A3A3"
+              onChangeText={setName}
+              value={name}
+            />
             <TextInput
               style={styles.input}
               placeholder="Email"
